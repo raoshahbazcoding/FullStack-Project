@@ -11,12 +11,13 @@ app.use(
   cors({
     origin: [
       "https://full-stack-project-01.vercel.app", // production
-      "http://localhost:5173", // dev
+      "http://localhost:5173", // development
     ],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"], // Add PUT & DELETE
     credentials: true,
   })
 );
+    
 
 // MongoDB Connection
 mongoose
@@ -59,5 +60,30 @@ app.post("/api/users", async (req, res) => {
   }
 });
 
+
+// Update user
+app.put("/api/users/:id", async (req, res) => {
+  try {
+    const { firstName, lastName, email } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { firstName, lastName, email },
+      { new: true }
+    );
+    res.json({ message: "User updated", user });
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Delete user
+app.delete("/api/users/:id", async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "User deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
 // Start server (local)
 app.listen(3000, () => console.log("Server running on port 3000"));
