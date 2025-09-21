@@ -3,7 +3,11 @@ import cors from "cors"
 
 const app = exprss()
 
-app.use(cors())
+app.use(cors({
+  origin: "https://full-stack-project-01.vercel.app",  // tumhara frontend
+  methods: ["GET","POST","PUT","DELETE"],
+  credentials: true
+}))
 
 
 app.get('/api/users' ,(req,res)=>{
