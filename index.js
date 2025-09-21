@@ -1,9 +1,9 @@
 import exprss from 'express'
+import cors from "cors"
 
 const app = exprss()
 
-
-
+app.use(cors())
 
 
 app.get('/api/users' ,(req,res)=>{
